@@ -1,0 +1,9 @@
+C:\Users\tobys\source\repos\Text2Touch\bin\Debug\Text2Touch.exe.config
+C:\Users\tobys\source\repos\Text2Touch\bin\Debug\Text2Touch.exe
+C:\Users\tobys\source\repos\Text2Touch\bin\Debug\Text2Touch.pdb
+C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.csprojAssemblyReference.cache
+C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.Properties.Resources.resources
+C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.csproj.GenerateResource.cache
+C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.exe
+C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.pdb
+C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.Text2TouchWindow.resources
