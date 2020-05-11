@@ -7,3 +7,13 @@ C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.csproj.GenerateResou
 C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.exe
 C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.pdb
 C:\Users\tobys\source\repos\Text2Touch\obj\Debug\Text2Touch.Text2TouchWindow.resources
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\bin\Debug\Text2Touch.exe.config
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\bin\Debug\Text2Touch.exe
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\bin\Debug\Text2Touch.pdb
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\obj\Debug\Text2Touch.csprojAssemblyReference.cache
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\obj\Debug\Text2Touch.Text2TouchWindow.resources
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\obj\Debug\Text2Touch.Properties.Resources.resources
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\obj\Debug\Text2Touch.csproj.GenerateResource.cache
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\obj\Debug\Text2Touch.csproj.CoreCompileInputs.cache
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\obj\Debug\Text2Touch.exe
+C:\Users\tobys\OneDrive\Documents\GitHub\Team-10-Senior-Design\Text2Touch\obj\Debug\Text2Touch.pdb

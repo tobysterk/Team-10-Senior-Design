@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -80,26 +81,23 @@ namespace Text2Touch {
             manualRadioButton.Enabled = false;
         }
 
+        private OpenFileDialog ofd;
+
         private void chooseFileButton_Click(object sender, EventArgs e) {
             // https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.openfiledialog?view=netframework-4.8
             string filePath = "unsuccessful";
-            using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = @"c:\Users\tobys\Desktop";
-                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 1;
-                openFileDialog.RestoreDirectory = true;
+            using (ofd = new OpenFileDialog()) {
+                ofd.InitialDirectory = @"c:\Users\tobys\Desktop";
+                ofd.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                ofd.FilterIndex = 1;
+                ofd.RestoreDirectory = true;
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                if (ofd.ShowDialog() == DialogResult.OK) {
                     //Get the path of specified file
-                    filePath = openFileDialog.FileName;
+                    filePath = ofd.FileName;
                     sendTextButton.Enabled = true;
 
-                    ////Read the contents of the file into a stream
-                    //var fileStream = openFileDialog.OpenFile();
 
-                    //using (StreamReader reader = new StreamReader(fileStream)) {
-                    //    fileContent = reader.ReadToEnd();
-                    //}
                 }
             }
             fileNameLabel.Text = filePath;
@@ -107,18 +105,25 @@ namespace Text2Touch {
 
         private void sendTextButton_Click(object sender, EventArgs e) {
             if (fileRadioButton.Checked) {
-                // read file (path stored in fileNameLabel.Text)
-                throw new System.NotImplementedException("File translation not working yet");
-            } else if (manualRadioButton.Checked) {
+                
+                // Read the contents of the file into a stream
+                var fileStream = ofd.OpenFile();
+                using (StreamReader reader = new StreamReader(fileStream)) {
+                    planFile(reader.ReadToEnd());
+                }
+
+            }
+            else if (manualRadioButton.Checked) {
                 planFile(textEntryBox.Text);
-                // send each int
-
-
                 textEntryBox.Text = "";
             } else {
                 // throw exception
                 throw new System.ApplicationException("Both radio buttons can't be checked");
             }
+
+            translatePage();
+
+            // send
         }
 
         private const int CELLS_PER_LINE = 27;
@@ -131,16 +136,6 @@ namespace Text2Touch {
         private List<int> translatedPage = new List<int>(LINES_PER_PAGE * 3);
 
         private void planFile(String fileContents) {
-            setupUntranslatedPage(fileContents); // untranslated giant line list with reversed words
-            
-            // from each char of each line, get the top, middle, and bottom and put it into a list of ints
-            translatePage();
-
-            // translatedPage is set up with the characters in reverse order
-
-        }
-
-        private void setupUntranslatedPage(string fileContents) {
             List<String> fileContentsSplit = fileContents.Split(' ').ToList();
             foreach (String word in fileContentsSplit) {
                 if ((untranslatedPage[currentCellLine].Length + word.Length) >= CELLS_PER_LINE) {
@@ -165,7 +160,7 @@ namespace Text2Touch {
                     // append each char
                     translatedTopLine += getTopLine(character);
                     translatedMidLine += getMidLine(character);
-                    translatedBotLine += getMidLine(character);
+                    translatedBotLine += getBotLine(character);
                 }
 
                 // write to translatedPage
@@ -176,32 +171,61 @@ namespace Text2Touch {
         }
 
         private String getTopLine(char character) {
-            switch(character) {
-                case 'a':
-                    ;
-                    break;
-                default:
-                    ;
-                    break;
-            }
-            return "11";
+            // translation via http://www.acb.org/tennessee/braille.html
+
+            // Lists of characters whose top lines have dots in certain positions
+            char[] onlyLeft = {'a', 'b', 'e', 'k', 'l', 'o', 'u', 'z', '1', '2', '5', '8'};
+            char[] onlyRight = {'i', 'j', 's', 't', 'w', '9', '0'}; // also num and lit
+            char[] none = {',', ';', ':', '.', '!', '(', ')', '?', '\"', '*', '\"', '\'', '-'}; // also let and cap
+
+            // Reverse the character by switching the 1 and 0
+            if (onlyLeft.Contains(character))
+                return "01";
+            else if (onlyRight.Contains(character))
+                return "10";
+            else if (none.Contains(character))
+                return "00";
+            else // default because the error char will be completely filled
+                return "11";
         }
 
         private String getMidLine(char character) {
+            // translation via http://www.acb.org/tennessee/braille.html
 
-            return "11";
+            char[] onlyLeft = {'b', 'f', 'i', 'l', 'p', 's', 'v', '2', '4', '6', '9', ',', ';', '?', '\"'};
+            char[] onlyRight = {'d', 'e', 'n', 'o', 'y', 'z', '4', '5', '*', '\"'}; // also let, num, lit
+            char[] none = {'a', 'c', 'k', 'm', 'u', 'x', '1', '3', '\'', '-'}; // also cap, numIndex
+
+            // Reverse the character by switching the 1 and 0
+            if (onlyLeft.Contains(character))
+                return "01";
+            else if (onlyRight.Contains(character))
+                return "10";
+            else if (none.Contains(character))
+                return "00";
+            else // default because the error char will be completely filled
+                return "11";
         }
 
         private String getBotLine(char character) {
+            // translation via http://www.acb.org/tennessee/braille.html
 
-            return "11";
+            char[] onlyLeft = {'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', ';', '*', '\''};
+            char[] onlyRight = {'w', '.'}; // also let and cap
+            char[] none = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', ':'}; // also num idx and lit
+
+            // Reverse the character by switching the 1 and 0
+            if (onlyLeft.Contains(character))
+                return "01";
+            else if (onlyRight.Contains(character))
+                return "10";
+            else if (none.Contains(character))
+                return "00";
+            else // default because the error char will be completely filled
+                return "11";
         }
 
         private String returnText = "Text sent: Test text";
-
-        //private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e) {
-        //    returnText = serialPort1.ReadLine();
-        //}
 
         private void timer1_Tick(object sender, EventArgs e) {
             returnTextLabel.Text = returnText;
